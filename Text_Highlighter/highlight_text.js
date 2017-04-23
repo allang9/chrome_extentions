@@ -1,5 +1,38 @@
+console.log("highlight_text called");
 
-//console.log("script called");
+function onMenuCreate(n) {
+    if (chrome.runtime.lastError) {
+        console.log(`Error: ${chrome.runtime.lastError}`);
+    } else {
+        console.log("Item created successfully");
+    }
+}
+
+var highlight = 'console.log("executed on page"); document.'
+
+function highlight() {
+    console.log("executed on page");
+}
+
+function highlightText(info, tab) {
+    console.log(info.selectionText);
+    chrome.tabs.executeScript(tab.id,{
+        file: "/highlight.js"
+    })
+
+};
+
+chrome.contextMenus.create({
+    id: "high-light",
+    title: "highlight text",
+    contexts: ["selection"]
+}, onMenuCreate);
+
+
+chrome.contextMenus.onClicked.addListener(highlightText);
+
+/*
+console.log("script called");
 chrome.contextMenus.create({
     title: "highlighter",
     contexts: ["all"],
@@ -10,7 +43,7 @@ function highlight() {
 
 }
 
-/*
+
 var hightlighter = function highlight() {
     console.log("function called. window.getSelection() = " + window.getSelection());
     var elements = document.getElementsByTagName('*');
@@ -33,9 +66,9 @@ var hightlighter = function highlight() {
         }
     }
 }
-*/
 
-/*
+
+
 function highlight(info) {
 var elements = document.getElementsByTagName('*');
 
